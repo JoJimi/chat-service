@@ -8,6 +8,7 @@ import org.example.chatservice.domain.chatroom.repository.ChatroomRepository;
 import org.example.chatservice.domain.chatroom.repository.MemberChatroomMappingRepository;
 import org.example.chatservice.domain.member.entity.Member;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ import java.util.List;
 @Service
 public class ChatService {
 
-    private ChatroomRepository chatroomRepository;
-    private MemberChatroomMappingRepository memberChatroomMappingRepository;
+    private final ChatroomRepository chatroomRepository;
+    private final MemberChatroomMappingRepository memberChatroomMappingRepository;
 
     // chatroom 만드는 메서드
     public Chatroom createChatroom(Member member, String title){
@@ -27,10 +28,7 @@ public class ChatService {
 
         chatroom = chatroomRepository.save(chatroom);
 
-        MemberChatroomMapping memberChatroomMapping = MemberChatroomMapping.builder()
-                .member(member)
-                .chatroom(chatroom)
-                .build();
+        MemberChatroomMapping memberChatroomMapping = chatroom.addMember(member);
 
         memberChatroomMapping = memberChatroomMappingRepository.save(memberChatroomMapping);
 
@@ -62,6 +60,7 @@ public class ChatService {
     }
 
     // 채팅방에서 빠져나오는 메서드
+    @Transactional
     public Boolean leaveChatroom(Member member, Long chatroomId){
         if(!memberChatroomMappingRepository.existsByMemberIdAndChatroomId(member.getId(), chatroomId)){
             log.info("참여하지 않은 방입니다.");

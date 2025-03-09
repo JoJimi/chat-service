@@ -3,6 +3,7 @@ package org.example.chatservice.domain.chatroom.controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.chatservice.domain.chatroom.domain.Chatroom;
+import org.example.chatservice.domain.chatroom.dto.ChatroomDto;
 import org.example.chatservice.domain.chatroom.service.ChatService;
 import org.example.chatservice.global.oauth2.custom.CustomOAuth2User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,9 +25,11 @@ public class ChatController {
      * @param title
      */
     @PostMapping
-    public Chatroom createChatroom(@AuthenticationPrincipal CustomOAuth2User user,
-                                   @RequestParam String title){
-        return chatService.createChatroom(user.getMember(), title);
+    public ChatroomDto createChatroom(@AuthenticationPrincipal CustomOAuth2User user,
+                                      @RequestParam String title){
+
+        Chatroom chatroom = chatService.createChatroom(user.getMember(), title);
+        return ChatroomDto.from(chatroom);
     }
 
     /**
@@ -53,8 +56,11 @@ public class ChatController {
      * @param user
      */
     @GetMapping
-    public List<Chatroom> getChatroomList(@AuthenticationPrincipal CustomOAuth2User user){
-        return chatService.getChatroomList(user.getMember());
+    public List<ChatroomDto> getChatroomList(@AuthenticationPrincipal CustomOAuth2User user){
+        List<Chatroom> chatroomList = chatService.getChatroomList(user.getMember());
+        return chatroomList.stream()
+                .map(ChatroomDto::from)
+                .toList();
     }
 
 }
