@@ -7,6 +7,8 @@ import org.example.chatservice.domain.chatroom.domain.MemberChatroomMapping;
 import org.example.chatservice.domain.chatroom.repository.ChatroomRepository;
 import org.example.chatservice.domain.chatroom.repository.MemberChatroomMappingRepository;
 import org.example.chatservice.domain.member.entity.Member;
+import org.example.chatservice.domain.message.entity.Message;
+import org.example.chatservice.domain.message.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ public class ChatService {
 
     private final ChatroomRepository chatroomRepository;
     private final MemberChatroomMappingRepository memberChatroomMappingRepository;
+    private final MessageRepository messageRepository;
 
     // chatroom 만드는 메서드
     public Chatroom createChatroom(Member member, String title){
@@ -78,5 +81,21 @@ public class ChatService {
         return memberChatroomMappingList.stream()
                 .map(MemberChatroomMapping::getChatroom)
                 .toList();
+    }
+
+    public Message saveMessage(Member member, Long chatroomId, String text){
+        Chatroom chatroom = chatroomRepository.findById(chatroomId).get();
+
+        Message message = Message.builder()
+                .text(text)
+                .member(member)
+                .chatroom(chatroom)
+                .build();
+
+        return messageRepository.save(message);
+    }
+
+    public List<Message> getMessageList(Long chatroomId){
+        return messageRepository.findAllByChatroomId(chatroomId);
     }
 }
