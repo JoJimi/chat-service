@@ -1,10 +1,7 @@
 package org.example.chatservice.domain.message.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.example.chatservice.domain.chatroom.domain.Chatroom;
 import org.example.chatservice.domain.member.entity.Member;
 
@@ -12,6 +9,7 @@ import org.example.chatservice.domain.member.entity.Member;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Message {
 
     @Id
