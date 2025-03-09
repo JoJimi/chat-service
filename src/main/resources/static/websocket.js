@@ -2,8 +2,7 @@ let websocket;
 
 function onOpen() {
   let username = document.getElementById("username");
-
-  websocket.send(username.value + ": " +"connected");
+  websocket.send(username.value + ":" + "connected");
   console.log("connected: onOpen()");
 }
 
@@ -37,7 +36,7 @@ function sendMessage() {
   let username = document.getElementById("username");
   let message = document.getElementById("message");
 
-  websocket.send(username.value + ": " +  message.value);
+  websocket.send(username.value + ":" + message.value);
   message.value = "";
   console.log("sent: send()");
 }
