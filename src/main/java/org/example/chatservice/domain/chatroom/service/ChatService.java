@@ -43,7 +43,7 @@ public class ChatService {
         2. 채팅방에 참여되도록 하는 로직 실행 후 true 반환
      */
     public Boolean joinChatroom(Member member, Long chatroomId){
-        if(memberChatroomMappingRepository.existByMemberIdAndChatroomId(member.getId(), chatroomId)){
+        if(memberChatroomMappingRepository.existsByMemberIdAndChatroomId(member.getId(), chatroomId)){
             log.info("이미 참여한 채팅방입니다.");
             return false;
         }
@@ -63,7 +63,7 @@ public class ChatService {
 
     // 채팅방에서 빠져나오는 메서드
     public Boolean leaveChatroom(Member member, Long chatroomId){
-        if(!memberChatroomMappingRepository.existByMemberIdAndChatroomId(member.getId(), chatroomId)){
+        if(!memberChatroomMappingRepository.existsByMemberIdAndChatroomId(member.getId(), chatroomId)){
             log.info("참여하지 않은 방입니다.");
             return false;
         }
