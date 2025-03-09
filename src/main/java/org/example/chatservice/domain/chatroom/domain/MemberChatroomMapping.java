@@ -1,9 +1,17 @@
 package org.example.chatservice.domain.chatroom.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.example.chatservice.domain.member.entity.Member;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class MemberChatroomMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
