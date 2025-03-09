@@ -2,7 +2,7 @@ package org.example.chatservice.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.chatservice.domain.member.type.GenderType;
+import org.example.chatservice.type.GenderType;
 
 import java.time.LocalDate;
 
