@@ -43,14 +43,18 @@ public class ChatService {
         1. 이미 참여한 채팅방이면 false 반환
         2. 채팅방에 참여되도록 하는 로직 실행 후 true 반환
      */
-    public Boolean joinChatroom(Member member, Long chatroomId){
-        if(memberChatroomMappingRepository.existsByMemberIdAndChatroomId(member.getId(), chatroomId)){
+    public Boolean joinChatroom(Member member, Long newChatroomId, Long currentChatroomId){
+        if(currentChatroomId != null){
+            updateLastCheckedAt(member, currentChatroomId);
+        }
+
+        if(memberChatroomMappingRepository.existsByMemberIdAndChatroomId(member.getId(), newChatroomId)){
             log.info("이미 참여한 채팅방입니다.");
             return false;
         }
 
         // 해당 채팅방이 없으면 NoSuchElementException 예외 발생
-        Chatroom chatroom = chatroomRepository.findById(chatroomId).get();
+        Chatroom chatroom = chatroomRepository.findById(newChatroomId).get();
 
         MemberChatroomMapping memberChatroomMapping = MemberChatroomMapping.builder()
                 .member(member)
@@ -60,6 +64,13 @@ public class ChatService {
         memberChatroomMapping = memberChatroomMappingRepository.save(memberChatroomMapping);
 
         return true;
+    }
+
+    private void updateLastCheckedAt(Member member, Long currentChatroomId){
+        MemberChatroomMapping memberChatroomMapping =
+                memberChatroomMappingRepository.findByMemberIdAndChatroomId(member.getId(), currentChatroomId).get();
+
+        memberChatroomMapping.updateLastCheckedAt();
     }
 
     // 채팅방에서 빠져나오는 메서드
@@ -79,7 +90,14 @@ public class ChatService {
         List<MemberChatroomMapping> memberChatroomMappingList = memberChatroomMappingRepository.findAllByMemberId(member.getId());
 
         return memberChatroomMappingList.stream()
-                .map(MemberChatroomMapping::getChatroom)
+                .map(memberChatroomMapping -> {
+                    Chatroom chatroom = memberChatroomMapping.getChatroom();
+                    chatroom.setHasNewMessage(
+                            messageRepository.existsByChatroomIdAndCreatedAtAfter(
+                            chatroom.getId(), memberChatroomMapping.getLastCheckedAt()));
+
+                    return chatroom;
+                })
                 .toList();
     }
 

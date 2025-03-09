@@ -28,6 +28,10 @@ public class Chatroom extends BaseEntity {
     @OneToMany(mappedBy = "chatroom")
     Set<MemberChatroomMapping> memberChatroomMappingSet;
 
+    // 테이블에는 적용 x, 클래스에만 적용
+    @Transient
+    Boolean hasNewMessage;
+
     public MemberChatroomMapping addMember(Member member){
         if(this.getMemberChatroomMappingSet() == null){
             this.memberChatroomMappingSet = new HashSet<>();
@@ -41,5 +45,9 @@ public class Chatroom extends BaseEntity {
         this.memberChatroomMappingSet.add(memberChatroomMapping);
 
         return memberChatroomMapping;
+    }
+
+    public void setHasNewMessage(Boolean hasNewMessage) {
+        this.hasNewMessage = hasNewMessage;
     }
 }
