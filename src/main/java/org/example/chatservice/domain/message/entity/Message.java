@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.chatservice.domain.chatroom.domain.Chatroom;
 import org.example.chatservice.domain.member.entity.Member;
+import org.example.chatservice.global.entity.BaseEntity;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Message {
+public class Message extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
