@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 public class ChatController {
 
-    private ChatService chatService;
+    private final ChatService chatService;
 
     /**
      * Chatroom 만드는 API
@@ -27,10 +27,9 @@ public class ChatController {
      * @param title
      */
     @PostMapping
-    public ChatroomDto createChatroom(@AuthenticationPrincipal CustomOAuth2User user,
-                                      @RequestParam String title){
-
+    public ChatroomDto createChatroom(@AuthenticationPrincipal CustomOAuth2User user, @RequestParam String title) {
         Chatroom chatroom = chatService.createChatroom(user.getMember(), title);
+
         return ChatroomDto.from(chatroom);
     }
 
@@ -59,8 +58,9 @@ public class ChatController {
      * @param user
      */
     @GetMapping
-    public List<ChatroomDto> getChatroomList(@AuthenticationPrincipal CustomOAuth2User user){
+    public List<ChatroomDto> getChatroomList(@AuthenticationPrincipal CustomOAuth2User user) {
         List<Chatroom> chatroomList = chatService.getChatroomList(user.getMember());
+
         return chatroomList.stream()
                 .map(ChatroomDto::from)
                 .toList();
