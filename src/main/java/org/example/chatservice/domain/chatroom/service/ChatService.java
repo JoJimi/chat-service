@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.chatservice.domain.chatroom.domain.Chatroom;
 import org.example.chatservice.domain.chatroom.domain.MemberChatroomMapping;
+import org.example.chatservice.domain.chatroom.dto.ChatroomDto;
 import org.example.chatservice.domain.chatroom.repository.ChatroomRepository;
 import org.example.chatservice.domain.chatroom.repository.MemberChatroomMappingRepository;
 import org.example.chatservice.domain.member.entity.Member;
@@ -115,5 +116,9 @@ public class ChatService {
 
     public List<Message> getMessageList(Long chatroomId){
         return messageRepository.findAllByChatroomId(chatroomId);
+    }
+
+    public Chatroom getChatroom(Long chatroomId) {
+        return chatroomRepository.findById(chatroomId).get();
     }
 }

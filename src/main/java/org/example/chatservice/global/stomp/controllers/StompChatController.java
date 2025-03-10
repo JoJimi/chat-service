@@ -2,6 +2,7 @@ package org.example.chatservice.global.stomp.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.chatservice.domain.chatroom.dto.ChatroomDto;
 import org.example.chatservice.domain.chatroom.service.ChatService;
 import org.example.chatservice.domain.message.entity.Message;
 import org.example.chatservice.global.oauth2.custom.CustomOAuth2User;
@@ -37,8 +38,9 @@ public class StompChatController {
 
         Message message = chatService.saveMessage(user.getMember(), chatroomId, payload.get("message"));
 
-        messagingTemplate.convertAndSend("/sub/chats/news", chatroomId);
-        return new ChatMessage(principal.getName(), payload.get("message"));
+        ChatroomDto chatroomDto = ChatroomDto.from(chatService.getChatroom(chatroomId));
+        messagingTemplate.convertAndSend("/sub/chats/updates", chatroomDto);
 
+        return new ChatMessage(principal.getName(), payload.get("message"));
     }
 }
