@@ -10,6 +10,8 @@ import org.example.chatservice.domain.member.entity.Member;
 import org.example.chatservice.domain.member.repository.MemberRepository;
 import org.example.chatservice.global.oauth2.custom.CustomUserDetails;
 import org.example.chatservice.type.RoleType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,11 +52,10 @@ public class ConsultantService implements UserDetailsService {
         return MemberDto.from(member);
     }
 
-    public List<ChatroomDto> getAllChatroom(){
-        List<Chatroom> chatroomList = chatroomRepository.findAll();
+    // pageable은 default 값이 20개이다.
+    public Page<ChatroomDto> getChatroomPage(Pageable pageable) {
+        Page<Chatroom> chatroomPage = chatroomRepository.findAll(pageable);
 
-        return chatroomList.stream()
-                .map(ChatroomDto::from)
-                .toList();
+        return chatroomPage.map(ChatroomDto::from);
     }
 }
