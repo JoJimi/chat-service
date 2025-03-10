@@ -30,9 +30,6 @@ public class Member extends BaseEntity {
     private LocalDate birthDay;
     private String role;
 
-    @OneToMany(mappedBy = "member")
-    Set<MemberChatroomMapping> memberChatroomMappingSet;
-
     public void updatePassword(String password, String confirmedPassword, PasswordEncoder passwordEncoder) {
         if(!password.equals(confirmedPassword)){
             throw new IllegalStateException("패스워드가 일치하지 않습니다.");
