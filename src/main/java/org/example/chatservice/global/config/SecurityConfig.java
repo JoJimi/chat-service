@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .securityMatcher("/consultants/**", "/login")
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/consultants").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().hasRole("CONSULTANT"))    // hasRole 사용시에는 "ROLE_CONSULTANT"로 적용됨
                 .formLogin(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable());
 
