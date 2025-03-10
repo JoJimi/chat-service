@@ -4,16 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.chatservice.domain.member.entity.Member;
 import org.example.chatservice.domain.member.factory.MemberFactory;
 import org.example.chatservice.domain.member.repository.MemberRepository;
-import org.example.chatservice.type.GenderType;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service

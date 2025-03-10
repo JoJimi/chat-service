@@ -27,12 +27,12 @@ public class SecurityConfig {
 
     @Order(1)
     @Bean
-    public SecurityFilterChain consultantSecurityFilterChain(HttpSecurity httpSecurity)throws Exception{
+    public SecurityFilterChain consultantSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .securityMatcher("/consultants/**")
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/consultants").permitAll()
-                        .anyRequest().hasRole("CONSULTANT"))    // hasRole 사용시에는 "ROLE_CONSULTANT"로 적용됨
+                        .anyRequest().hasRole("CONSULTANT"))
                 .formLogin(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable());
 
@@ -40,7 +40,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
