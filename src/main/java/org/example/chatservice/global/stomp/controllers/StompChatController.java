@@ -33,14 +33,13 @@ public class StompChatController {
     public ChatMessage handleMessage(Principal principal,
                                      @DestinationVariable Long chatroomId,
                                      @Payload Map<String, String> payload) {
-        log.info("{} sent {} in {}", principal.getName(), payload, chatroomId);
-        CustomOAuth2User user = (CustomOAuth2User) ((AbstractAuthenticationToken) principal).getPrincipal();
 
+        log.info("{} sent {} in {}", principal.getName(), payload, chatroomId);
+
+        CustomOAuth2User user = (CustomOAuth2User) ((AbstractAuthenticationToken) principal).getPrincipal();
         Message message = chatService.saveMessage(user.getMember(), chatroomId, payload.get("message"));
 
-        ChatroomDto chatroomDto = ChatroomDto.from(chatService.getChatroom(chatroomId));
-        messagingTemplate.convertAndSend("/sub/chats/updates", chatroomDto);
-
+        messagingTemplate.convertAndSend("/sub/chats/updates", chatService.getChatroom(chatroomId));
         return new ChatMessage(principal.getName(), payload.get("message"));
     }
 }
