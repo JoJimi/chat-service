@@ -30,8 +30,8 @@ spring:
       client:
         registration:
           kakao:
-            client-id: ${client_id}
-            client-secret: ${client_secret}
+            client-id: ${TAKAO_CLIENT_ID}
+            client-secret: ${TAKAO_CLIENT_SECRET}
             scope:
               - profile_nickname
               - account_email
@@ -44,6 +44,12 @@ spring:
             client-name: kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
